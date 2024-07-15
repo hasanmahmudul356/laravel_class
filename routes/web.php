@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->name('login');
+Route::post('/login', [\App\Http\Controllers\LoginController::class, 'doLogin'])->name('doLogin');
 
 Route::prefix('/')->group(function (){
     Route::get('/', [\App\Http\Controllers\Frontend\FrontendController::class, 'index']);
@@ -10,7 +12,8 @@ Route::prefix('/')->group(function (){
     Route::get('/contact', [\App\Http\Controllers\Frontend\FrontendController::class, 'webContact']);
 });
 
-Route::prefix('admin')->group(function (){
+Route::prefix('admin') ->middleware('authCheck')->group(function (){
+    Route::get('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/category', [\App\Http\Controllers\Backend\CategoryController::class, 'category'])->name('cat.list');
@@ -20,8 +23,10 @@ Route::prefix('admin')->group(function (){
     Route::post('/category/edit', [\App\Http\Controllers\Backend\CategoryController::class, 'update'])->name('cat.update');
     Route::get('/delete/{id}', [\App\Http\Controllers\Backend\CategoryController::class, 'delete'])->name('cat.delete');
 
-    Route::get('/news', [\App\Http\Controllers\DashboardController::class, 'news']);
-    Route::get('/contact', [\App\Http\Controllers\DashboardController::class, 'contact']);
+    Route::resource('news', \App\Http\Controllers\Backend\NewsController::class);
 });
+
+Route::get('/news', [\App\Http\Controllers\DashboardController::class, 'news']);
+Route::get('/contact', [\App\Http\Controllers\DashboardController::class, 'contact']);
 
 
