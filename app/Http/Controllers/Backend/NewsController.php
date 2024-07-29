@@ -34,7 +34,14 @@ class NewsController extends Controller
             'title' => 'required',
             'category_id' => 'required',
             'details' => 'required',
+            'thumbnail'=>'required',
         ]);
+
+        $imageName = '';
+        if ($image = $request->file('thumbnail')){
+            $imageName = time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
+            $image->move(storage_path('uploads'), $imageName);
+        }
 
         $input = $request->except('_token');
 
@@ -42,6 +49,7 @@ class NewsController extends Controller
         $news->fill($input);
         $news->date = date('Y-m-d');
         $news->created_by = auth()->user()->id;
+        $news->thumbnail = $imageName;
         $news->save();
 
 
@@ -56,15 +64,12 @@ class NewsController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $data['news'] = News::where('id', $id)->first();
+        $data['categories'] = Category::where('status', 1)->get();
+
+        return view('backend.news.newsCreate', $data);
     }
 
     /**
@@ -76,17 +81,46 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'category_id' => 'required',
+            'details' => 'required',
+        ]);
+
+        $input = $request->except('_token');
+
+        $news = News::where('id', $request->input('id'))->first();
+        if ($news){
+            $imageName = null;
+            if ($image = $request->file('thumbnail')){
+                $imageName = time().'-'.uniqid().'.'.$image->getClientOriginalExtension();
+                $image->move(storage_path('uploads'), $imageName);
+            }
+
+            $news->fill($input);
+            $news->thumbnail = $imageName ?? $news->thumbnail;
+            $news->save();
+
+            Session::flash('success', 'Successfully Updated');
+            return redirect()->back();
+        }
+
+        Session::flash('success', 'Not Updated');
+        return redirect()->back();
+
+
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $news = News::where('id', $id)->first();
+
+        if ($news){
+            $news->delete();
+
+            return response()->json(['status'=>2000, 'message' => 'Successfully Deleted'], 200);
+        }
+        return response()->json(['status'=>5000, 'message' => 'Not Deleted'], 200);
     }
 }

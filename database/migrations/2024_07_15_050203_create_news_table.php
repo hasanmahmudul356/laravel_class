@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('details');
             $table->integer('status')->default(1);
             $table->integer('view')->default(0);
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,8 @@ Route::post('/login', [\App\Http\Controllers\LoginController::class, 'doLogin'])
 
 Route::prefix('/')->group(function (){
     Route::get('/', [\App\Http\Controllers\Frontend\FrontendController::class, 'index']);
-    Route::get('/categories', [\App\Http\Controllers\Frontend\FrontendController::class, 'webCategory']);
+    Route::get('/categories/{category_id}', [\App\Http\Controllers\Frontend\FrontendController::class, 'webCategory'])->name('wb.cat');
+    Route::get('/news/{news_id}', [\App\Http\Controllers\Frontend\FrontendController::class, 'newsDetails'])->name('wb.news');
     Route::get('/contact', [\App\Http\Controllers\Frontend\FrontendController::class, 'webContact']);
 });
 

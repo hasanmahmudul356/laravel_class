@@ -11,7 +11,6 @@
     </div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -19,6 +18,7 @@
                         <thead>
                         <tr>
                             <th>SL</th>
+                            <th>Image</th>
                             <th>Tile</th>
                             <th>Date</th>
                             <th>Author</th>
@@ -29,12 +29,13 @@
                         @foreach($news as $key => $value)
                             <tr>
                                 <th>{{$key+1}}</th>
+                                <th><img style="width: 50px" src="{{env('STORAGE_PATH')}}/{{$value->thumbnail}}"></th>
                                 <th>{{$value->title}}</th>
                                 <th>{{$value->date}}</th>
                                 <th>{{$value->user_name}}</th>
                                 <th>
-                                    <a href="{{route('cat.edit', $value->id)}}" class="btn btn-warning">Edit</a>
-                                    <a onclick="return confirm('Are you sure to delete?')" href="{{route('cat.delete', $value->id)}}" class="btn btn-danger">Delete</a>
+                                    <a href="{{route('news.edit', $value->id)}}" class="btn btn-warning">Edit</a>
+                                    <a  href="{{route('news.destroy', $value->id)}}" class="btn btn-danger deleteButton">Delete</a>
                                 </th>
                             </tr>
                         @endforeach
@@ -44,6 +45,36 @@
                 </div>
             </div>
         </div>
-
     </div>
+@endsection
+@section('script')
+<script>
+    $('.deleteButton').on('click', function (e){
+        e.preventDefault();
+        let confir = confirm('Are you sure to delete?');
+        if(confir){
+            let url = $(this).attr('href');
+            // let title = $('#title').val();
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                data: {
+                    _token : '{{csrf_token()}}',
+                    // title : title,
+                },
+                success: function(res){
+                    if(parseInt(res.status) === 2000){
+                        alert(res.message);
+                        // $(this).parent().parent().remove();
+                    }else{
+                        alert(res.message);
+                    }
+                },
+                error : function (dsdsd){
+                    console.log(dsdsd);
+                }
+            });
+        }
+    })
+</script>
 @endsection

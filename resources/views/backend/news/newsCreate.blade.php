@@ -14,8 +14,13 @@
 
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('news.store')}}">
+                <form method="post" enctype="multipart/form-data" action="{{isset($news) ? route('news.update', $news->id) : route('news.store')}}">
                     {{csrf_field()}}
+
+                    @if(isset($news))
+                        {{method_field('PUT')}}
+                        <input type="hidden" name="id" value="{{$news->id}}">
+                    @endif
 
                     <span class="text-success">{{Session::has('success') ? Session::get('success') : ''}}</span>
 
@@ -24,19 +29,24 @@
                         <select class="form-control" name="category_id">
                             <option value="">Select</option>
                             @foreach($categories as $category)
-                                <option value="{{$category->id}}">{{$category->category_name}}</option>
+                                <option {{isset($news) && $category->id == $news->category_id ? 'selected' : '' }} value="{{$category->id}}">{{$category->category_name}}</option>
                             @endforeach
                         </select>
                         <span class="text-danger">{{$errors->has('category_id') ? $errors->first('category_id') : ''}}</span>
                     </div>
                     <div class="form-group">
                         <label>Title</label>
-                        <input class="form-control" name="title">
+                        <input class="form-control" name="title" value="{{isset($news)?$news->title : ''}}">
                         <span class="text-danger">{{$errors->has('title') ? $errors->first('title') : ''}}</span>
                     </div>
                     <div class="form-group">
                         <label>Details</label>
-                        <textarea rows="5" class="form-control" name="details"></textarea>
+                        <textarea rows="5" class="form-control" name="details">{{isset($news)?$news->details : ''}}</textarea>
+                        <span class="text-danger">{{$errors->has('details') ? $errors->first('details') : ''}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Thumbnail</label>
+                        <input type="file" name="thumbnail">
                         <span class="text-danger">{{$errors->has('details') ? $errors->first('details') : ''}}</span>
                     </div>
                     <div class="form-group">
