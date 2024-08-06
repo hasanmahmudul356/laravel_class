@@ -40,6 +40,7 @@
 <script src="{{asset('frontend/lib/easing/easing.min.js')}}"></script>
 <script src="{{asset('frontend/lib/owlcarousel/owl.carousel.min.js')}}"></script>
 <script src="{{asset('frontend/js/main.js')}}"></script>
+@yield('script')
 </body>
 
 </html>

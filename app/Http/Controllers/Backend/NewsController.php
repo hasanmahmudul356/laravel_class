@@ -17,7 +17,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $data['news'] = News::join('users', 'news.created_by', '=', 'users.id')->select('news.*','users.name as user_name')->get();
+        $data['news'] = News::join('users', 'news.created_by', '=', 'users.id')->select('news.*','users.name as user_name')->orderBy('id', 'DESC')->get();
         return view('backend.news.newsList', $data);
     }
 

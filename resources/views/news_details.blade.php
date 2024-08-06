@@ -31,7 +31,7 @@
                             </div>
                             <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">{{$news->title}}</h1>
                             <p>
-                                {{$news->details}}
+                                {!! $news->details !!}
                             </p>
                         </div>
                         <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
@@ -45,82 +45,64 @@
                             </div>
                         </div>
                     </div>
-                    <!-- News Detail End -->
-
-                    <!-- Comment List Start -->
                     <div class="mb-3">
                         <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">3 Comments</h4>
+                            <h4 class="m-0 text-uppercase font-weight-bold">{{$comment_count}} Comments</h4>
                         </div>
                         <div class="bg-white border border-top-0 p-4">
-                            <div class="media mb-4">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                <div class="media-body">
-                                    <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                                    <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                        accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                    <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                <div class="media-body">
-                                    <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                                    <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                                        accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                    <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                    <div class="media mt-4">
-                                        <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                        <div class="media-body">
-                                            <h6><a class="text-secondary font-weight-bold" href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                                            <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor
-                                                labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed
-                                                eirmod ipsum.</p>
-                                            <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                        </div>
+                            @foreach($comments as $comment)
+                                <div class="media mb-4">
+                                    <img src="{{asset('frontend/img/user.jpg')}}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                        <h6><a class="text-secondary font-weight-bold" href="">{{@$comment->visitor->name}}</a> <small><i>{{date('M d, Y', strtotime($comment->created_at))}}</i></small></h6>
+                                        {{@$comment->comment}}
                                     </div>
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <!-- Comment List End -->
 
                     <!-- Comment Form Start -->
-                    <div class="mb-3">
-                        <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">Leave a comment</h4>
-                        </div>
-                        <div class="bg-white border border-top-0 p-4">
-                            <form>
-                                <div class="form-row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="name">Name *</label>
-                                            <input type="text" class="form-control" id="name">
+                    <section id="commentSection">
+                        <div class="mb-3">
+                            <div class="section-title mb-0">
+                                <h4 class="m-0 text-uppercase font-weight-bold">Leave a comment</h4>
+                            </div>
+                            <div class="bg-white border border-top-0 p-4">
+                                @if(auth()->guard('visitor')->check())
+                                    <form id="commentForm" action="{{route('comment.store')}}">
+                                        <div class="form-row">
+                                            <div class="col-12">
+                                                <span class="text-success" id="showMessage"></span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="name">Name *</label>
+                                                    <input readonly type="text" class="form-control" id="name" value="{{auth()->guard('visitor')->user()->name}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="email">Email *</label>
+                                                    <input readonly type="email" class="form-control" id="email" value="{{auth()->guard('visitor')->user()->email}}">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="email">Email *</label>
-                                            <input type="email" class="form-control" id="email">
+                                            <label for="message">Message *</label>
+                                            <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="website">Website</label>
-                                    <input type="url" class="form-control" id="website">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="message">Message *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group mb-0">
-                                    <input type="submit" value="Leave a comment" class="btn btn-primary font-weight-semi-bold py-2 px-3">
-                                </div>
-                            </form>
+                                        <div class="form-group mb-0">
+                                            <input type="submit" value="Leave a comment" class="btn btn-primary font-weight-semi-bold py-2 px-3">
+                                        </div>
+                                    </form>
+                                @else
+                                    <a href="{{route('comment.index')}}?url={{request()->fullUrl()}}" class="btn btn-primary">Login</a>
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    </section>
                     <!-- Comment Form End -->
                 </div>
 
@@ -273,4 +255,33 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        $('#commentForm').on('submit', function (e){
+            e.preventDefault();
+            let reqObject = {
+                // name : $('#name').val(),
+                // email : $('#email').val(),
+                message : $('#message').val(),
+                _token : '{{csrf_token()}}',
+                title : '{{$news->id}}'
+            }
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: reqObject,
+                success: function(res){
+                    if(parseInt(res.status) === 2000){
+                        $('#showMessage').text(res.message);
+                    }else{
+                        alert(res.message);
+                    }
+                },
+                error : function (dsdsd){
+                    console.log(dsdsd);
+                }
+            });
+        });
+    </script>
 @endsection
