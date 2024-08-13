@@ -14,6 +14,7 @@ Route::prefix('/')->group(function (){
     Route::resource('/comment', \App\Http\Controllers\Frontend\CommentController::class);
     Route::resource('/visitor_login', \App\Http\Controllers\VisitorLoginController::class);
     Route::post('/visitor_do_login', [\App\Http\Controllers\VisitorLoginController::class, 'visitor_do_login'])->name('visitor_do_login');
+    Route::get('/admin_comment', [\App\Http\Controllers\Frontend\CommentController::class, 'commentList'])->name('admin_comment');
 });
 
 Route::prefix('admin') ->middleware('authCheck')->group(function (){

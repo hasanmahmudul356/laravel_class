@@ -78,7 +78,9 @@
 <script src="{{asset('backend/vendor/chart.js/Chart.min.js')}}"></script>
 <script src="{{asset('backend/js/demo/chart-area-demo.js')}}"></script>
 <script src="{{asset('backend/js/demo/chart-pie-demo.js')}}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="{{asset('backend/js/vue/support.js')}}"></script>
+<script>window.baseUrl = '{{url('/')}}'</script>
 @yield('script')
 </body>
 
