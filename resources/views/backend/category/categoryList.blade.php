@@ -3,10 +3,10 @@
     <div class="container-fluid">
     <div class="row">
         <div class="col-md-6 text-left">
-            <h1 class="h5 mb-2 text-gray-800">Category List</h1>
+            <h1 class="h5 mb-2 text-gray-800">{{__('app.cat_list')}}</h1>
         </div>
         <div class="col-md-6 text-right mb-2">
-            <a href="{{route('cat.add')}}" class="btn btn-primary">Add New</a>
+            <a href="{{route('cat.add')}}" class="btn btn-primary">{{__('app.add_new')}}</a>
         </div>
     </div>
         <div class="card shadow mb-4">

@@ -1,0 +1,30 @@
+{
+	"district": [{
+		"district_id": 'Dhaka'
+	},
+	{
+		"district_id": 'rajshahi'
+	}],
+	"age": '1',
+	"min_age": "22",
+	"max_age": "30",
+	"min_edu": 'MSC',
+	"max_edu": 'MSC',
+	"job_type": 'Contract based',
+	"paid_by": "Monthly",
+	"application_start_date": '2024-07-01',
+	"application_end_date": "2024-07-31",
+	"job_category": 'Software Enginner',
+	"title": "New Job Title",
+	"location": "Dhaka",
+	"experience_from": "1",
+	"experience_to": "5",
+	"no_of_position": "05",
+	"salary_from": "25000",
+	"salary_to": "35000",
+	"description": "Posted job Details",
+	"image":
+	{
+		"path": "uploads/Screenshot_from_2024-07-15_10-14-48.png",
+		"name": "Screenshot from 2024-07-15 10-14-48.png",
+	},

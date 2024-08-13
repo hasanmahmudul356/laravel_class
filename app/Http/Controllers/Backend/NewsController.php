@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class NewsController extends Controller
@@ -17,7 +18,20 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $data['news'] = News::join('users', 'news.created_by', '=', 'users.id')->select('news.*','users.name as user_name')->orderBy('id', 'DESC')->get();
+        $data['news'] = News::join('users', 'news.created_by', '=', 'users.id')->select('news.*','users.name as user_name')->orderBy('id', 'DESC')->get()->toArray();
+
+        dd( $data['news']);
+//
+//        $news = DB::table('news')->join('users', 'news.created_by', '=', 'users.id')->select('news.*','users.name as user_name')->orderBy('id', 'DESC')->get();
+//
+//
+//        $news6 = collect($news)->whereIn('category_id', 6)->toArray();
+//        $news8 = collect($news)->filter(function ($echData){
+//            return $echData->category_id == 8;
+//        });
+//
+//        dd($news6, $news8);
+
         return view('backend.news.newsList', $data);
     }
 

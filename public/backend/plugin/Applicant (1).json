@@ -1,0 +1,18 @@
+{
+	"name": "Md Nasim Mahmud",
+	"job_id": "1",
+	"email": "letsgonasim@gmail.com",
+	"phone": "01893253506",
+	"date_of_birth": "2000-01-12",
+	"f_name": "Forhad Hossain",
+	"m_name": "Nasim Parvin",
+	"nid": "123456789",
+	"passport": null,
+	"reference": null,
+	"district_id": "80",
+	"edu_id": "Certificate Id",
+	"present_address": "Vill 1 : Gidisha , Vill 2 : Chowrat , Post: Rasulpur",
+	"permanent_address": "Vill 1 : Gidisha , Vill 2 : Chowrat , Post: Rasulpur",
+	"cv_file": "docx/pdf/word",
+	"image": "image"
+}

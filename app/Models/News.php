@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
+
+    protected $appends = ['title2'];
+
     use HasFactory;
 
     protected $fillable = [
@@ -14,6 +17,14 @@ class News extends Model
         'title',
         'details'
     ];
+
+
+    public function getTitleAttribute($value){
+        return strtoupper($value);
+    }
+    public function getTitle2Attribute($value){
+        return strtoupper($this->title);
+    }
 
     public function category()
     {
