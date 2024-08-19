@@ -11,8 +11,7 @@ class CategoryController extends Controller
 {
     public function category()
     {
-        $data['categories'] = Category::get();
-        return view('backend.category.categoryList', $data);
+        return view('backend.category.categoryList');
     }
 
     public function create()
